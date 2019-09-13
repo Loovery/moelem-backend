@@ -1,0 +1,38 @@
+{
+  "name": "moelem-backend",
+  "version": "1.0.0",
+  "description": "Для молодежной организации ЭЛЕМ",
+  "main": "app.js",
+  "scripts": {
+    "start": "pm2 start src/app.js --interpreter babel-node --watch && pm2 logs all",
+    "lint": "eslint src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Loovery/moelem-backend.git"
+  },
+  "author": "Grigorii Korepanov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Loovery/moelem-backend/issues"
+  },
+  "homepage": "https://github.com/Loovery/moelem-backend#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.6.0",
+    "@babel/core": "^7.6.0",
+    "@babel/node": "^7.6.1",
+    "@babel/preset-env": "^7.6.0",
+    "babel-plugin-module-resolver": "^3.2.0",
+    "eslint": "^6.3.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2"
+  },
+  "dependencies": {
+    "await-to-js": "^2.1.1",
+    "dotenv": "^8.1.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.7.0",
+    "saslprep": "^1.0.3",
+    "telegraf": "^3.32.0"
+  }
+}
