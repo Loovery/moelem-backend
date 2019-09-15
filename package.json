@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "pm2 start src/app.js --interpreter babel-node --watch && pm2 logs all",
-    "lint": "eslint src"
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
@@ -30,6 +30,7 @@
   "dependencies": {
     "await-to-js": "^2.1.1",
     "dotenv": "^8.1.0",
+    "eslint-import-resolver-babel-module": "^5.1.0",
     "express": "^4.17.1",
     "mongoose": "^5.7.0",
     "saslprep": "^1.0.3",

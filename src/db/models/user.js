@@ -19,7 +19,11 @@ const UserSchema = new mongoose.Schema({
   description: String,
   role: {
     type: String,
-    default: 'user',
+    default: 'Участник',
+  },
+  admin: {
+    type: Boolean,
+    default: false,
   },
 },
 {

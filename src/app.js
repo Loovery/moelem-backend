@@ -1,62 +1,39 @@
 import Telegraf from 'telegraf';
 import session from 'telegraf/session';
-import registration from 'src/bot/registration';
-
-
-// import express from 'express';
 import Stage from 'telegraf/stage';
-import { getAdminUsers } from './apps/users/servises';
+import botStart from '#bot/start';
+import botEvents from '#bot/events';
+import { loggedIn } from '#bot/middlewares';
+import AdminControl from '#bot/admin';
 
 require('src/db');
-
-// const app = express();
-
 require('dotenv').config();
 
 const {
-  // APP_PORT,
-  // LOCAL_TUNNEL,
   TELEGRAM_TOKEN,
 } = process.env;
-
 
 const { leave } = Stage;
 const stage = new Stage();
 
+
 const bot = new Telegraf(TELEGRAM_TOKEN);
 bot.use(session());
 bot.use(stage.middleware());
+bot.use(loggedIn);
 
-registration(bot, stage);
+botStart(bot, stage);
+botEvents(bot, stage);
 
-bot.on('text', async (ctx) => {
-  const admins = await getAdminUsers();
-  console.log(admins);
-
-  ctx.reply(admins);
+bot.command('/sendtoall', async (ctx) => {
+  if (ctx.session.user.admin) {
+    const text = ctx.message.text.split('/sendtoall')[1].trim();
+    new AdminControl(bot).sendMessageToEveryone(text);
+  }
 });
 
-// app.use(bot.webhookCallback('/secret-path'));
-// bot.telegram.setWebhook('https://server.tld:8443/secret-path');
-// bot.telegram.setWebhook(LOCAL_TUNNEL);
-//
-// app.get('/', (req, res) => {
-//   res.send(`<h1>Бот молодёжки</h1>
-//   <div>
-//   На данный момент реализовано: <ul>
-//   <li>Минимальные настройки Бота в телеграме @MoElem_bot</li>
-//   </ul>
-//
-//   Реализовывается: <ul>
-//   <li>Команда /registration позволяющая добавлять новых пользователей</li>
-//   <li>Схема БД для регистрации пользователей и раздачи ролей</li>
-//   </ul>
-//   </div>`);
-// });
-
-// app.listen(APP_PORT, () => {
-//   console.log(`Example app listening on port ${APP_PORT}!`);
-// });
-
+bot.on('text', async (ctx) => {
+  ctx.reply(' Пока ничего не работает', { parse_mode: 'markdown' });
+});
 
 bot.launch();

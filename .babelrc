@@ -6,8 +6,9 @@
     ["module-resolver", {
       "root": ["./"],
       "alias": {
-        "users": "./src/apps/users/",
-        "underscore": "lodash"
+        "#bot": "./src/bot/",
+        "#users": "./src/apps/users/",
+        "#events": "./src/apps/events/"
       }
     }]
   ]

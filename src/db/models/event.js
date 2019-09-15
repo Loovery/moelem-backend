@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const EventSchema = new mongoose.Schema({
   name: String,
   description: String,
-  time: String,
+  time: Date,
   location: String,
   manager: {
     user: {
@@ -19,6 +19,10 @@ const EventSchema = new mongoose.Schema({
     },
     resultOfWork: String,
   }],
+  closed: {
+    type: Boolean,
+    default: false,
+  },
 },
 {
   timestamps: true,

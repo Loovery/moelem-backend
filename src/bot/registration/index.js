@@ -1,56 +1,25 @@
 import Scene from 'telegraf/scenes/base';
 import { Extra } from 'telegraf';
 import stages from './stages';
-import { registrationUser, getAdminUsers } from '../../apps/users/servises';
+import { registrationUser } from '#users/servises';
+import AdminControl from '#bot/admin';
 
-const index = (bot, stage) => {
+const index = (bot, stage, startCtx) => {
   const getUserFullname = new Scene('getUserFullname');
   stage.register(getUserFullname);
+  stages.getUserFullname(getUserFullname, startCtx);
 
   const getStaffPersonalNumber = new Scene('getStaffPersonalNumber');
   stage.register(getStaffPersonalNumber);
+  stages.getStaffPersonalNumber(getStaffPersonalNumber);
 
   const getBirthday = new Scene('getBirthday');
   stage.register(getBirthday);
-
-  const getEduc = new Scene('getEduc');
-  stage.register(getEduc);
+  stages.getBirthday(getBirthday);
 
   const getDescription = new Scene('getDescription');
   stage.register(getDescription);
-
-  const getContact = new Scene('getContact');
-  stage.register(getContact);
-
-
-  const askAboutNameFromTelegram = Extra
-    .markdown()
-    .markup((m) => m.inlineKeyboard([
-      m.callbackButton('Да', 'yesItIsMyName'),
-      m.callbackButton('Нет', 'noItIsNotMyName'),
-    ]));
-
-  stages.startBot(bot, askAboutNameFromTelegram);
-
-  bot.action('yesItIsMyName', (ctx) => {
-    const messageData = ctx.update.callback_query.message;
-    ctx.editMessageText(`${messageData.text}\nВаш ответ: Да.`);
-    ctx.reply('Отлично, полдела сделано.\nТеперь введите свой табельный номер.');
-    ctx.scene.enter('getStaffPersonalNumber');
-  });
-
-  bot.action('noItIsNotMyName', (ctx) => {
-    const messageData = ctx.update.callback_query.message;
-    ctx.editMessageText(`${messageData.text}\nВаш ответ: Нет`);
-    ctx.reply('Введите ваше имя и фамилия (в формате: Иван Иванов).');
-    ctx.scene.enter('getUserFullname');
-  });
-
-  stages.getStaffPersonalNumber(getStaffPersonalNumber);
-  stages.getUserFullname(getUserFullname);
-  stages.getBirthday(getBirthday);
   stages.getDescription(getDescription);
-
 
   const checkingInputUserData = Extra
     .markdown()
@@ -58,8 +27,6 @@ const index = (bot, stage) => {
       m.callbackButton('Всё верно', 'allInputRight'),
       m.callbackButton('Начать ввод заново', 'needStartAgainInput'),
     ]));
-
-  stages.getContact(getContact, checkingInputUserData);
 
   bot.action('allInputRight', async (ctx) => {
     if (ctx.session.fullname) {
@@ -84,27 +51,24 @@ const index = (bot, stage) => {
       };
 
       await registrationUser(userData);
-      const admins = await getAdminUsers();
+      const admin = new AdminControl(bot);
 
-      admins.forEach((admin) => {
-        bot.telegram.sendMessage(
-          admin.telegramId,
-          `Новый пользователь: [${ctx.session.fullname}](tg://user?id=${telegramUserInfo.id}).`,
-          { parse_mode: 'markdown' },
-        );
-      });
+      admin.sendMessageToAdmins(`Новый пользователь: [${ctx.session.fullname}](tg://user?id=${telegramUserInfo.id}).`);
 
-      ctx.session = null;
-      ctx.reply('Вы успешно прошли регистрацию');
+      ctx.reply('Вы успешно прошли регистрацию', { reply_markup: { remove_keyboard: true } });
     }
     ctx.scene.leave('main');
   });
 
   bot.action('needStartAgainInput', (ctx) => {
     ctx.editMessageReplyMarkup({});
-    ctx.reply('Ну всё пошли всё заново заводить\nВведите ваше имя и фамилия (в формате: Иван Иванов).');
+    ctx.reply('Ну всё пошли всё заново заводить\nВведите ваше имя и фамилия (в формате: Иван Иванов).', { reply_markup: { remove_keyboard: true } });
     ctx.scene.enter('getUserFullname');
   });
+
+  const getContact = new Scene('getContact');
+  stage.register(getContact);
+  stages.getContact(getContact, checkingInputUserData);
 };
 
 export default index;
