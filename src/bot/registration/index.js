@@ -53,7 +53,7 @@ const index = (bot, stage, startCtx) => {
       await registrationUser(userData);
       const admin = new AdminControl(bot);
 
-      admin.sendMessageToAdmins(`Новый пользователь: [${ctx.session.fullname}](tg://user?id=${telegramUserInfo.id}).`);
+      admin.sendMessageToAdmins(`Новый пользователь: [${ctx.session.fullname}](tg://user?id=${telegramUserInfo.id}).`, { parse_mode: 'markdown' });
 
       ctx.reply('Вы успешно прошли регистрацию', { reply_markup: { remove_keyboard: true } });
     }

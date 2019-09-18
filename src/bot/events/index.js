@@ -1,7 +1,13 @@
 import { Extra } from 'telegraf';
 import Scene from 'telegraf/scenes/base';
 import {
-  stageEventName, stageEventDescription, stageEventDateAndTime, stageEventLocation,
+  stageEventName,
+  stageEventDescription,
+  stageEventDateAndTime,
+  stageEventLocation,
+  stageEventSave,
+  stageEventMaxOrganizer,
+  stageEventMaxParticipant,
 } from '#bot/events/stages';
 import { getEvents } from '#events/servises';
 
@@ -20,7 +26,19 @@ const index = (bot, stage) => {
 
   const getEventLocation = new Scene('getEventLocation');
   stage.register(getEventLocation);
-  stageEventLocation(getEventLocation, bot);
+  stageEventLocation(getEventLocation);
+
+  const getEventMaxOrganizer = new Scene('getEventMaxOrganizer');
+  stage.register(getEventMaxOrganizer);
+  stageEventMaxOrganizer(getEventMaxOrganizer);
+
+  const getEventMaxParticipant = new Scene('getEventMaxParticipant');
+  stage.register(getEventMaxParticipant);
+  stageEventMaxParticipant(getEventMaxParticipant);
+
+  const getEventSave = new Scene('getEventSave');
+  stage.register(getEventSave);
+  stageEventSave(getEventSave, bot);
 
 
   bot.action('activeEvents', async (ctx) => {
@@ -40,7 +58,7 @@ const index = (bot, stage) => {
 
 
   bot.command('events', (ctx) => {
-    const admin = ctx.session.user.admin;
+    const { admin } = ctx.session.user;
 
     ctx.reply('Выберите пункт, который Вас интересует:', Extra
       .markdown()

@@ -5,24 +5,24 @@ class AdminControl {
     this.bot = bot;
   }
 
-  async sendMessageToAdmins(text) {
+  async sendMessageToAdmins(text, extraSetting) {
     const admins = await getAdminUsers();
     admins.forEach((admin) => {
       this.bot.telegram.sendMessage(
         admin.telegramId,
         `\`[Системное сообщение]\`\n${text}`,
-        { parse_mode: 'markdown' },
+        extraSetting,
       );
     });
   }
 
-  async sendMessageToEveryone(text) {
+  async sendMessageToEveryone(text, extraSetting) {
     const users = await getUsers();
     users.forEach((user) => {
       this.bot.telegram.sendMessage(
         user.telegramId,
         `\`[Системное сообщение]\`\n${text}`,
-        { parse_mode: 'markdown' },
+        extraSetting,
       );
     });
   }

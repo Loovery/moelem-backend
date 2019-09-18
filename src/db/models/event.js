@@ -12,10 +12,21 @@ const EventSchema = new mongoose.Schema({
     },
     resultOfWork: String,
   },
-  members: [{
+  maxParticipants: Number,
+  participants: [{
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
+      unique: true,
+    },
+    resultOfWork: String,
+  }],
+  maxOrganizers: Number,
+  organizers: [{
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      unique: true,
     },
     resultOfWork: String,
   }],
