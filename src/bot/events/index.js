@@ -9,7 +9,7 @@ import {
   stageEventMaxOrganizer,
   stageEventMaxParticipant,
 } from '#bot/events/stages';
-import { getEvents } from '#events/servises';
+import { getEvents, pushOrganizerToEvent, pushParticipantToEvent } from '#events/servises';
 
 const index = (bot, stage) => {
   const getEventName = new Scene('getEventName');
@@ -40,6 +40,32 @@ const index = (bot, stage) => {
   stage.register(getEventSave);
   stageEventSave(getEventSave, bot);
 
+
+  bot.action('eventOrganize', async (ctx) => {
+    const { text } = ctx.callbackQuery.message;
+    const textLines = text.split('\n');
+    const eventID = textLines[1].replace('ID:', '');
+    const resultPush = await pushOrganizerToEvent(eventID, ctx.session.user.id);
+    if (resultPush.n > 0) {
+      textLines[textLines.length - 1] = 'Вы записались на мероприятие, как организатор.';
+    } else {
+      textLines[textLines.length - 1] = 'Вы уже участвуйте в мероприятии';
+    }
+    ctx.editMessageText(textLines.join('\n'));
+  });
+
+  bot.action('eventParticipant', async (ctx) => {
+    const { text } = ctx.callbackQuery.message;
+    const textLines = text.split('\n');
+    const eventID = textLines[1].replace('ID:', '');
+    const resultPush = await pushParticipantToEvent(eventID, ctx.session.user.id);
+    if (resultPush.n > 0) {
+      textLines[textLines.length - 1] = 'Вы записались на мероприятие, как участник.';
+    } else {
+      textLines[textLines.length - 1] = 'Вы уже участвуйте в мероприятии';
+    }
+    ctx.editMessageText(textLines.join('\n'));
+  });
 
   bot.action('activeEvents', async (ctx) => {
     ctx.reply('activeEvents');

@@ -33,7 +33,8 @@ bot.command('/sendtoall', async (ctx) => {
 });
 
 bot.on('callback_query', (ctx) => {
-  console.log(ctx.callbackQuery);
+  console.log(ctx.callbackQuery.data);
+  console.log(ctx.callbackQuery.message.text);
   ctx.reply(' callback_query');
 });
 

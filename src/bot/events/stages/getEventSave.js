@@ -3,11 +3,11 @@ import { newEvent } from '#events/servises';
 import AdminControl from '#bot/admin';
 
 export default (getEventSave, bot) => {
-  const questionOfParticipation = (data) => Extra
+  const questionOfParticipation = Extra
     .markdown(true)
     .markup((m) => m.inlineKeyboard([[
-      m.callbackButton('Как организатор', `eventOrganize_${data.id}`),
-      m.callbackButton('Как участник', `eventParticipant_${data.id}`),
+      m.callbackButton('Как организатор', 'eventOrganize'),
+      m.callbackButton('Как участник', 'eventParticipant'),
     ], [m.callbackButton('Не хочу принимать участие', 'eventNotParticipant')]]));
 
   bot.action('eventNotParticipant', async (ctx) => {
@@ -29,6 +29,10 @@ export default (getEventSave, bot) => {
       location: ctx.session.event.location,
       maxOrganizers: ctx.session.event.maxOrganizers,
       maxParticipants: ctx.session.event.maxParticipants,
+      manager: {
+        user: ctx.session.event.manager || '5d7a42d65dafc76160e58b7f',
+        resultOfWork: null,
+      },
     };
 
     const data = await newEvent(eventData);
@@ -45,15 +49,14 @@ export default (getEventSave, bot) => {
       }
     }
 
-    admin.sendMessageToAdmins(`\nДобавлено новое мероприятие:
+    admin.sendMessageToEveryone(`ID:${data.id}\nДобавлено новое мероприятие:
 Название: ${eventData.name}
 Описание: ${eventData.description}
 Дата и время проведение: ${eventData.time}
 Место проведения: ${eventData.location}
-${emptySlots}
 
 Хотите быть частью мероприятия?`,
-    questionOfParticipation(data));
+    questionOfParticipation);
 
     await ctx.scene.leave('getEventSave');
   });
