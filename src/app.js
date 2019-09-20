@@ -32,15 +32,19 @@ bot.command('/sendtoall', async (ctx) => {
   }
 });
 
-bot.on('callback_query', (ctx) => {
-  console.log(ctx.callbackQuery.data);
-  console.log(ctx.callbackQuery.message.text);
-  ctx.reply(' callback_query');
-});
+// bot.on('callback_query', (ctx) => {
+//   console.log(ctx.callbackQuery.data);
+//   console.log(ctx.callbackQuery.message.text);
+//   ctx.reply(' callback_query');
+// });
 
 
 bot.on('text', async (ctx) => {
-  console.log(ctx.session.user.fullname, ctx.message.text);
+  if (ctx.session.user) {
+    console.log(ctx.session.user.fullname, ctx.message.text);
+  } else {
+    console.log(ctx.message.from.username, ctx.message.text);
+  }
   ctx.reply(' Пока ничего не работает');
 });
 

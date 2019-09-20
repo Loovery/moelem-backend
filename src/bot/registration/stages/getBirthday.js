@@ -7,6 +7,6 @@ export default (getBirthday) => {
   });
 
   getBirthday.on('text', async (ctx) => {
-    ctx.reply('Введидте только год рождения в формате 01.01.1990.');
+    ctx.reply('Введидте только дату рождения (в формате дд.мм.гггг).');
   });
 };

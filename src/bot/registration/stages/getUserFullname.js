@@ -36,8 +36,13 @@ export default (getUserFullname, botCtx) => {
 
     await ctx.scene.enter('getUserFullname');
 
-    ctx.reply(`${userName}, добро пожаловать. Я чат бот молодёжки!\nПройдите небольшую регистрацию и расскажите нам о себе. \n${
-      fullname}`, askAboutNameFromTelegram);
+    if (fullname) {
+      ctx.reply(`${userName}, добро пожаловать. Я чат бот молодёжки!\nПройдите небольшую регистрацию и расскажите нам о себе. \n${
+        fullname}`, askAboutNameFromTelegram);
+    } else {
+      ctx.reply(`${userName}, добро пожаловать. Я чат бот молодёжки!\nПройдите небольшую регистрацию и расскажите нам о себе. \n
+Введите ваше имя и фамилия (в формате: Иван Иванов).`);
+    }
   };
 
   getUserFullname.command('start', async (ctx) => {

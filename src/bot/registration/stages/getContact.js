@@ -10,7 +10,7 @@ export default (getContact, checkingInputUserData) => {
 О себе: ${ctx.session.description}
 Номер телефона: ${ctx.session.phone}`,
     checkingInputUserData);
-    await ctx.scene.leave('getNumber');
+    await ctx.scene.leave('getContact');
   });
 
   getContact.on('text', async (ctx) => {

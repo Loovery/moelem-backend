@@ -84,7 +84,10 @@ const index = (bot, stage) => {
 
 
   bot.command('events', (ctx) => {
-    const { admin } = ctx.session.user;
+    let admin = false;
+    if (ctx.session.user) {
+      admin = ctx.session.user.admin;
+    }
 
     ctx.reply('Выберите пункт, который Вас интересует:', Extra
       .markdown()
