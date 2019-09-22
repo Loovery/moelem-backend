@@ -1,12 +1,9 @@
 import { User } from 'src/db/models';
 import to from 'await-to-js';
 
+export default async (id, userData) => {
+  const [error, data] = await to(User.updateOne({ id }, { ...userData }));
 
-const updateEvent = async (id, data) => {
-  const [errUserData, userData] = await to(User.updateOne({ id }, { ...data }));
-
-  if (errUserData) throw new Error(errUserData);
-  return userData;
+  if (error) throw new Error(error);
+  return data;
 };
-
-export default updateEvent;

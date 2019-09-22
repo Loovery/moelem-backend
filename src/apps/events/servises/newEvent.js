@@ -1,15 +1,12 @@
 import { Event } from 'src/db/models';
 import to from 'await-to-js';
 
+export default async (userEventData) => {
+  const [error, data] = await to(Event.create(userEventData));
 
-const newEvent = async (data) => {
-  const [errEventData, eventData] = await to(Event.create(data));
-
-  if (errEventData) {
-    throw new Error(errEventData);
+  if (error) {
+    throw new Error(error);
   }
 
-  return eventData;
+  return data;
 };
-
-export default newEvent;

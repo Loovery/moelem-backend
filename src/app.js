@@ -7,7 +7,8 @@ import { loggedIn } from '#bot/middlewares';
 import AdminControl from '#bot/admin';
 
 require('src/db');
-require('dotenv').config();
+require('dotenv')
+  .config();
 
 const {
   TELEGRAM_TOKEN,

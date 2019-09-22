@@ -1,7 +1,7 @@
 import { User } from 'src/db/models';
 import to from 'await-to-js';
 
-const getAdminUsers = async (telegramId) => {
+export default async (telegramId) => {
   const admin = true;
   const query = {
     admin,
@@ -11,13 +11,11 @@ const getAdminUsers = async (telegramId) => {
     query.telegramId = telegramId;
   }
 
-  const [errUserData, userData] = await to(User.find(query));
+  const [error, data] = await to(User.find(query));
 
-  if (errUserData) {
-    throw new Error(errUserData);
+  if (error) {
+    throw new Error(error);
   }
 
-  return userData;
+  return data;
 };
-
-export default getAdminUsers;

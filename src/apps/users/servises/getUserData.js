@@ -1,14 +1,12 @@
 import { User } from 'src/db/models';
 import to from 'await-to-js';
 
-const getUserData = async (telegramId) => {
-  const [errUserData, userData] = await to(User.findOne({ telegramId }));
+export default async (telegramId) => {
+  const [error, data] = await to(User.findOne({ telegramId }));
 
-  if (errUserData) {
-    throw new Error(errUserData);
+  if (error) {
+    throw new Error(error);
   }
 
-  return userData;
+  return data;
 };
-
-export default getUserData;

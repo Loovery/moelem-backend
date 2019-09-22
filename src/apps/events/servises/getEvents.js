@@ -1,26 +1,24 @@
 import { Event } from 'src/db/models';
 import to from 'await-to-js';
 
-const getEvents = async (closed, userId) => {
+export default async (closed, userId) => {
   const query = {
-    closed,
+    closed, // isClosed or hasClosed так как булева переменная
   };
 
   // if (userId) {
   //   query._id = userId;
   // }
 
-  const [errUserData, eventsData] = await to(
+  const [error, data] = await to(
     Event.find(query),
   );
 
-  console.log(eventsData);
+  console.log(data);
 
-  if (errUserData) {
-    throw new Error(errUserData);
+  if (error) {
+    throw new Error(error);
   }
 
-  return eventsData;
+  return data;
 };
-
-export default getEvents;

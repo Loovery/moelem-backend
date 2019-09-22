@@ -1,20 +1,19 @@
 import { User } from 'src/db/models';
 import to from 'await-to-js';
 
-
-const registrationUser = async (data) => {
-  let [errUserData, userData] = await to(User.findOne({ telegramId: data.telegramId }));
+export default async (data) => {
+  let [error, userData] = await to(User.findOne({ telegramId: data.telegramId }));
 
   let operation = 'create';
 
-  if (errUserData) {
-    throw new Error(errUserData);
+  if (error) {
+    throw new Error(error);
   } else if (!userData) {
-    [errUserData, userData] = await to(User.create(data));
+    [error, userData] = await to(User.create(data));
     operation = 'create';
 
-    if (errUserData) {
-      throw new Error(errUserData);
+    if (error) {
+      throw new Error(error);
     }
   }
   const result = {
@@ -25,5 +24,3 @@ const registrationUser = async (data) => {
 
   return result;
 };
-
-export default registrationUser;

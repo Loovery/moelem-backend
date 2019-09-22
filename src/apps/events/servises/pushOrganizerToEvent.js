@@ -1,8 +1,8 @@
 import to from 'await-to-js';
 import { Event } from '#db/models';
 
-const pushOrganizerToEvent = async (id, userId) => {
-  const [errOrganizer, userOrganizerData] = await to(Event.updateOne({
+export default async (id, userId) => {
+  const [error, data] = await to(Event.updateOne({
     _id: id,
     'organizers.user': { $ne: userId },
     'participants.user': { $ne: userId },
@@ -10,9 +10,7 @@ const pushOrganizerToEvent = async (id, userId) => {
   },
   { $push: { organizers: { $each: [{ user: userId, resultOfWork: '' }] } } }));
 
-  if (errOrganizer) throw new Error(errOrganizer);
+  if (error) throw new Error(error);
 
-  return userOrganizerData;
+  return data;
 };
-
-export default pushOrganizerToEvent;

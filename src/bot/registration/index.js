@@ -23,6 +23,7 @@ const index = (bot, stage, startCtx) => {
 
   const checkingInputUserData = Extra
     .markdown()
+    .markup((m) => m.removeKeyboard())
     .markup((m) => m.inlineKeyboard([
       m.callbackButton('Всё верно', 'allInputRight'),
       m.callbackButton('Начать ввод заново', 'needStartAgainInput'),

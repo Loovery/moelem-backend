@@ -1,12 +1,9 @@
 import { User } from 'src/db/models';
 import to from 'await-to-js';
 
+export default async (telegramId, userData) => {
+  const [error, data] = await to(User.updateOne({ telegramId }, { ...userData }));
 
-const updateUserData = async (telegramId, data) => {
-  const [errUserData, userData] = await to(User.updateOne({ telegramId }, { ...data }));
-
-  if (errUserData) throw new Error(errUserData);
-  return userData;
+  if (error) throw new Error(error);
+  return data;
 };
-
-export default updateUserData;
