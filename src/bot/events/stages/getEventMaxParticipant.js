@@ -1,6 +1,6 @@
 import { Extra } from 'telegraf';
 
-export default (getEventMaxParticipant) => {
+export default (scene) => {
   const checkingInputEventData = Extra
     .markdown()
     .markup((m) => m.inlineKeyboard([[
@@ -9,7 +9,7 @@ export default (getEventMaxParticipant) => {
     ],
     [m.callbackButton('Отменить ввод', 'cancelSaveEvent')]]));
 
-  getEventMaxParticipant.hears(/^[0-9]{0,4}$/, async (ctx) => {
+  scene.hears(/^[0-9]{0,4}$/, async (ctx) => {
     if (!ctx.session.event.maxParticipants) {
       ctx.session.event.maxParticipants = ctx.message.text;
 
@@ -27,7 +27,7 @@ export default (getEventMaxParticipant) => {
     }
   });
 
-  getEventMaxParticipant.on('text', async (ctx) => {
+  scene.on('text', async (ctx) => {
     if (!ctx.session.event.maxParticipants) {
       ctx.reply('`Ошибка ввода`\n'
         + 'Введите, сколько максимально может быть участников. (0 - если нет ограничений, -1 - если их не должно быть).',

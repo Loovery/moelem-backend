@@ -2,7 +2,7 @@ import { Extra } from 'telegraf';
 import { newEvent } from '#events/servises';
 import AdminControl from '#bot/admin';
 
-export default (getEventSave, bot) => {
+export default (scene, bot) => {
   const questionOfParticipation = Extra
     .markdown(true)
     .markup((m) => m.inlineKeyboard([[
@@ -15,7 +15,7 @@ export default (getEventSave, bot) => {
     ctx.editMessageText(`${messageData.text}\nВаш ответ: Нет.`, { parse_mode: 'markdown' });
   });
 
-  getEventSave.action('allInputRight', async (ctx) => {
+  scene.action('allInputRight', async (ctx) => {
     const messageData = ctx.update.callback_query.message;
     ctx.editMessageText(`${messageData.text}\nМероприятие добавлено.`, { parse_mode: 'markdown' });
 
@@ -61,14 +61,14 @@ export default (getEventSave, bot) => {
     await ctx.scene.leave('getEventSave');
   });
 
-  getEventSave.action('needStartAgainInput', async (ctx) => {
+  scene.action('needStartAgainInput', async (ctx) => {
     ctx.editMessageReplyMarkup({});
     await ctx.scene.leave('getEventSave');
     await ctx.scene.enter('getEventName');
     ctx.reply('Введите название мероприятия.', { reply_markup: { remove_keyboard: true } });
   });
 
-  getEventSave.action('cancelSaveEvent', async (ctx) => {
+  scene.action('cancelSaveEvent', async (ctx) => {
     ctx.editMessageReplyMarkup({});
     await ctx.scene.leave('getEventSave');
     ctx.reply('Ввод мероприятия отменён.', { reply_markup: { remove_keyboard: true } });

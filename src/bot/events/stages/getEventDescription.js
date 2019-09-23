@@ -1,5 +1,5 @@
-export default (getEventDescription) => {
-  getEventDescription.on('text', async (ctx) => {
+export default (scene) => {
+  scene.on('text', async (ctx) => {
     ctx.session.event.description = ctx.message.text;
 
     await ctx.scene.leave('getEventDescription');

@@ -1,5 +1,5 @@
-export default (getEventName) => {
-  getEventName.on('text', async (ctx) => {
+export default (scene) => {
+  scene.on('text', async (ctx) => {
     ctx.session.event = {
       name: ctx.message.text,
     };

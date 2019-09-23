@@ -1,6 +1,6 @@
 import { Extra } from 'telegraf';
 
-export default (getUserFullname, botCtx) => {
+export default (scene, botCtx) => {
   const askAboutNameFromTelegram = Extra
     .markdown()
     .markup((m) => m.inlineKeyboard([
@@ -8,14 +8,14 @@ export default (getUserFullname, botCtx) => {
       m.callbackButton('Нет', 'noItIsNotMyName'),
     ]));
 
-  getUserFullname.action('yesItIsMyName', (ctx) => {
+  scene.action('yesItIsMyName', (ctx) => {
     const messageData = ctx.update.callback_query.message;
     ctx.editMessageText(`${messageData.text}\nВаш ответ: Да.`);
     ctx.reply('Отлично, полдела сделано.\nТеперь введите свой табельный номер.');
     ctx.scene.enter('getStaffPersonalNumber');
   });
 
-  getUserFullname.action('noItIsNotMyName', (ctx) => {
+  scene.action('noItIsNotMyName', (ctx) => {
     const messageData = ctx.update.callback_query.message;
     ctx.editMessageText(`${messageData.text}\nВаш ответ: Нет`);
     ctx.reply('Введите ваше имя и фамилия (в формате: Иван Иванов).');
@@ -49,7 +49,7 @@ export default (getUserFullname, botCtx) => {
     }
   };
 
-  getUserFullname.command('start', async (ctx) => {
+  scene.command('start', async (ctx) => {
     ctx.reply(
       'Начнем заново. Введите Ваше имя и фамилия (в формате: Иван Иванов).',
       {
@@ -61,7 +61,7 @@ export default (getUserFullname, botCtx) => {
     init(ctx);
   });
 
-  getUserFullname.on('text', async (ctx) => {
+  scene.on('text', async (ctx) => {
     ctx.session.fullname = ctx.message.text;
     ctx.reply('Отлично, полдела сделано.\nТеперь введите свой табельный номер.');
 

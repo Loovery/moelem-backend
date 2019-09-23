@@ -1,5 +1,5 @@
-export default (getContact, checkingInputUserData) => {
-  getContact.on('contact', async (ctx) => {
+export default (scene, inlineKeyboard) => {
+  scene.on('contact', async (ctx) => {
     ctx.session.phone = ctx.message.contact.phone_number
       .replace('+7', '')
       .replace(/D/g, '');
@@ -9,11 +9,11 @@ export default (getContact, checkingInputUserData) => {
 Дата рождения: ${ctx.session.birthday}
 О себе: ${ctx.session.description}
 Номер телефона: ${ctx.session.phone}`,
-    checkingInputUserData);
+    inlineKeyboard);
     await ctx.scene.leave('getContact');
   });
 
-  getContact.on('text', async (ctx) => {
+  scene.on('text', async (ctx) => {
     let phone = ctx.message.text.replace('+7', '')
       .replace(/D/g, '');
 
@@ -32,7 +32,7 @@ export default (getContact, checkingInputUserData) => {
 Дата рождения: ${ctx.session.birthday}
 О себе: ${ctx.session.description}
 Номер телефона: ${ctx.session.phone}`,
-      checkingInputUserData,
+      inlineKeyboard,
     );
 
     await ctx.scene.leave('getContact');
