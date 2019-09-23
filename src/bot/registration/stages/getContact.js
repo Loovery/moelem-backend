@@ -3,6 +3,8 @@ export default (scene, inlineKeyboard) => {
     ctx.session.phone = ctx.message.contact.phone_number
       .replace('+7', '')
       .replace(/D/g, '');
+    await ctx.scene.leave('getContact');
+    await ctx.scene.enter('saveUserData');
     ctx.reply(`Проверьте все данные и нажмите "Все верно" если они корректны: 
 Имя: ${ctx.session.fullname}
 Табельный номер: ${ctx.session.staffPersonalNumber}
@@ -10,7 +12,6 @@ export default (scene, inlineKeyboard) => {
 О себе: ${ctx.session.description}
 Номер телефона: ${ctx.session.phone}`,
     inlineKeyboard);
-    await ctx.scene.leave('getContact');
   });
 
   scene.on('text', async (ctx) => {
@@ -25,6 +26,8 @@ export default (scene, inlineKeyboard) => {
 
     ctx.session.phone = phone;
 
+    await ctx.scene.leave('getContact');
+    await ctx.scene.enter('saveUserData');
     ctx.reply(
       `Проверьте все данные и нажмите "Все верно", если они корректны: 
 Имя: ${ctx.session.fullname}
@@ -34,7 +37,5 @@ export default (scene, inlineKeyboard) => {
 Номер телефона: ${ctx.session.phone}`,
       inlineKeyboard,
     );
-
-    await ctx.scene.leave('getContact');
   });
 };
