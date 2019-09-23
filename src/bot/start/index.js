@@ -1,11 +1,11 @@
 import botRegistration from '#bot/registration';
-import { getUserData } from '#users/servises';
+import { getUser } from '#users/services';
 
 export default (bot, stage) => {
   bot.start(async (ctx) => {
     const telegramUserInfo = ctx.message.from;
     if (!telegramUserInfo.is_bot) {
-      const user = ctx.session.user || await getUserData(telegramUserInfo.id);
+      const user = ctx.session.user || await getUser(telegramUserInfo.id);
 
       if (!user) {
         botRegistration(bot, stage, ctx);

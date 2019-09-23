@@ -1,7 +1,10 @@
 import mongoose from 'mongoose';
 
 const EventSchema = new mongoose.Schema({
-  name: String,
+  name: {
+    type: String,
+    unique: true,
+  },
   description: String,
   time: Date,
   location: String,
@@ -28,7 +31,7 @@ const EventSchema = new mongoose.Schema({
     },
     resultOfWork: String,
   }],
-  closed: {
+  isClosed: {
     type: Boolean,
     default: false,
   },

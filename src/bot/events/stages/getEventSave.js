@@ -1,5 +1,5 @@
 import { Extra } from 'telegraf';
-import { newEvent } from '#events/servises';
+import { newEvent } from '#events/services';
 import AdminControl from '#bot/admin';
 
 export default (scene, bot) => {

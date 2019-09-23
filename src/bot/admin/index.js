@@ -1,4 +1,4 @@
-import { getAdminUsers, getUsers } from '#users/servises';
+import { getAdminUsers, getUsers } from '#users/services';
 
 class AdminControl {
   constructor(bot) {

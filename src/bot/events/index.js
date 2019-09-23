@@ -9,7 +9,13 @@ import {
   stageEventMaxOrganizer,
   stageEventMaxParticipant,
 } from '#bot/events/stages';
-import { getEvents, pushOrganizerToEvent, pushParticipantToEvent } from '#events/servises';
+import {
+  getEvents,
+  pushOrganizerToEvent,
+  pushParticipantToEvent,
+  getOrganizers,
+  getParticipants,
+} from '#events/services';
 
 const index = (bot, stage) => {
   const getEventName = new Scene('getEventName');
@@ -49,7 +55,7 @@ const index = (bot, stage) => {
     if (resultPush.n > 0) {
       textLines[textLines.length - 1] = 'Вы записались на мероприятие, как организатор.';
     } else {
-      textLines[textLines.length - 1] = 'Вы уже участвуйте в мероприятии';
+      textLines[textLines.length - 1] = 'Вы уже участвуйте в данноме мероприятии';
     }
     ctx.editMessageText(textLines.join('\n'));
   });
@@ -67,14 +73,58 @@ const index = (bot, stage) => {
     ctx.editMessageText(textLines.join('\n'));
   });
 
-  bot.action('activeEvents', async (ctx) => {
-    ctx.reply('activeEvents');
+  bot.action('organizers', async (ctx) => {
+    const { text } = ctx.callbackQuery.message;
+    const textLines = text.split('\n');
+    const eventID = textLines[1].replace('ID:', '');
+
+    const data = await getOrganizers(eventID);
+    const participants = data.map((item) => item.user.fullname);
+
+    ctx.reply(`Организаторы:\n${participants.join('\n')}`);
   });
 
-  bot.action('myActiveEvents', (ctx) => {
-    console.log(ctx.session.user.id);
-    getEvents(false, ctx.session.user.id);
-    ctx.reply('myActiveEvents');
+  bot.action('participants', async (ctx) => {
+    const { text } = ctx.callbackQuery.message;
+    const textLines = text.split('\n');
+    const eventID = textLines[1].replace('ID:', '');
+
+    const data = await getParticipants(eventID);
+    const participants = data.map((item) => item.user.fullname);
+
+    ctx.reply(`Участники:\n${participants.join('\n')}`);
+  });
+
+  bot.action('activeEvents', async (ctx) => {
+    const data = await getEvents(false);
+    ctx.editMessageText('Какое мероприятие Вас интересует?', Extra
+      .markdown(true)
+      .markup((m) => {
+        const buttons = data.map((item) => [m.callbackButton(item.name, `event_${item.id}`)]);
+        buttons.push([m.callbackButton('« Вернуться назад', 'events')]);
+
+        return m.inlineKeyboard(buttons);
+      }));
+  });
+
+  bot.action('myActiveEvents', async (ctx) => {
+    const data = await getEvents(false, ctx.session.user.id);
+    ctx.editMessageText('Какое мероприятие в котором Вы участвуйте Вас интересует?', Extra
+      .markdown(true)
+      .markup((m) => {
+        const buttons = data.map((item) => [m.callbackButton(item.name, `event_${item.id}`)]);
+        buttons.push([m.callbackButton('« Вернуться назад', 'events')]);
+
+        return m.inlineKeyboard(buttons);
+      }));
+  });
+
+  bot.action('deleteEvent', async (ctx) => {
+    ctx.editMessageText('Почти удалили мероприятие\nФункция пока не работает');
+  });
+
+  bot.action('closeEvent', async (ctx) => {
+    ctx.editMessageText('Почти закрыл мероприятие\nФункция пока не работает');
   });
 
   bot.action('newEvent', async (ctx) => {
@@ -82,6 +132,27 @@ const index = (bot, stage) => {
     ctx.reply('Введите название мероприятия.');
   });
 
+  bot.action('events', (ctx) => {
+    let admin = false;
+    if (ctx.session.user) {
+      admin = ctx.session.user.admin;
+    }
+
+    ctx.editMessageText('Выберите пункт, который Вас интересует:', Extra
+      .markdown()
+      .markup((m) => {
+        const buttons = [[
+          m.callbackButton('Список мероприятий', 'activeEvents'),
+          m.callbackButton('Мои мероприятия', 'myActiveEvents'),
+        ]];
+
+        if (admin) {
+          buttons.push([m.callbackButton('Добавить мероприятие', 'newEvent')]);
+        }
+
+        return m.inlineKeyboard(buttons);
+      }));
+  });
 
   bot.command('events', (ctx) => {
     let admin = false;

@@ -1,7 +1,7 @@
 import Scene from 'telegraf/scenes/base';
 import { Extra } from 'telegraf';
 import stages from './stages';
-import { registrationUser } from '#users/servises';
+import { registrationUser } from '#users/services';
 import AdminControl from '#bot/admin';
 
 const index = (bot, stage, startCtx) => {

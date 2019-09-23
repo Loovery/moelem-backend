@@ -15,6 +15,7 @@ const UserSchema = new mongoose.Schema({
     type: Number,
     unique: true,
   },
+  department: String,
   jobTitle: String,
   description: String,
   role: {

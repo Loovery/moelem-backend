@@ -1,6 +1,6 @@
-import { getUserData } from '#users/servises';
+import { getUser } from '#users/services';
 
 export default async (ctx, next) => {
-  ctx.session.user = ctx.session.user || await getUserData((await ctx.getChat()).id);
+  ctx.session.user = ctx.session.user || await getUser((await ctx.getChat()).id);
   return next();
 };
