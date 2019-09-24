@@ -1,13 +1,17 @@
 import getUserFullname from './getUserFullname';
-import getStaffPersonalNumber from './getStaffPersonalNumber';
 import getBirthday from './getBirthday';
-import getDescription from './getDescription';
 import getContact from './getContact';
+import getStaffPersonalNumber from './getStaffPersonalNumber';
+import getJobTitle from './getJobTitle';
+import getDepartment from './getDepartment';
+import getDescription from './getDescription';
 
 export default {
   getUserFullname,
-  getStaffPersonalNumber,
   getBirthday,
-  getDescription,
   getContact,
+  getStaffPersonalNumber,
+  getJobTitle,
+  getDepartment,
+  getDescription,
 };

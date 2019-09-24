@@ -1,5 +1,4 @@
-import { Extra } from 'telegraf';
-import Scene from 'telegraf/scenes/base';
+import moment from 'moment';
 import {
   getUser,
 } from '#users/services';
@@ -8,18 +7,26 @@ const index = (bot, stage) => {
   bot.command('me', (ctx) => {
     const { user } = ctx.session;
 
-    ctx.reply(`${user.fullname}
-Дата рождения: ${user.birthday}
-${user.description}
-Телефон: ${user.phone}
+    const birthday = moment(user.birthday);
+    birthday.locale('ru');
+
+    ctx.reply(`*${user.fullname}* - ${user.role} молодёжной организации
+Родился ${birthday.format('DD.MM.YYYY, dddd')}
+${user.phone}
+
 Табельный номер: ${user.staffPersonalNumber}
+${user.jobTitle}
+${user.department}
+
+${user.description}
+
 
 Был участником: [Тут будет цифра]
 Был организатором: [Тут будет цифра]
 
 Награды: [Возможно будущий функционал]
 
-[Тут будут кнопки по редактированию информации]`);
+[Тут будут кнопки по редактированию информации]`, { parse_mode: 'markdown' });
   });
 
 
@@ -29,18 +36,25 @@ ${user.description}
     if (staffPersonalNumberOrFullname) {
       const data = await getUser(staffPersonalNumberOrFullname);
       if (data) {
-        ctx.reply(`${data.fullname}
-Дата рождения: ${data.birthday}
-${data.description}
-Телефон: ${data.phone}
+        const birthday = moment(data.birthday);
+        birthday.locale('ru');
+
+        ctx.reply(`[${data.fullname}](tg://user?id=${data.telegramId}) - ${data.role} молодёжной организации
+Родился ${birthday.format('DD.MM.YYYY')}
+${data.phone}
+
 Табельный номер: ${data.staffPersonalNumber}
+${data.jobTitle || 'Должность неизвестна'}
+${data.department || 'Отдел неизвестен'}
+
+${data.description}
 
 Был участником: [Тут будет цифра]
 Был организатором: [Тут будет цифра]
 
 Награды: [Возможно будущий функционал]
 
-[Тут будут кнопки по редактированию информации]`);
+[Тут будут кнопки по редактированию информации]`, { parse_mode: 'markdown' });
       } else {
         ctx.reply('Участник не найден.');
       }
@@ -51,4 +65,3 @@ ${data.description}
 };
 
 export default index;
-

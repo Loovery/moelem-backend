@@ -1,9 +1,10 @@
 export default (scene) => {
   scene.on('text', async (ctx) => {
-    ctx.session.description = ctx.message.text;
-    ctx.reply('Напишите нам Вашу должность, она нам нужна чтобы отпрашивать Вас с работы.',
-      { reply_markup: { remove_keyboard: true } });
+    ctx.session.jobTitle = ctx.message.text;
+
     await ctx.scene.leave('getJobTitle');
-    ctx.scene.enter('getDescription');
+    await ctx.scene.enter('getDepartment');
+
+    ctx.reply('3. Как называется Ваш отдел?');
   });
 };

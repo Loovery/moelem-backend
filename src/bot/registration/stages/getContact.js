@@ -1,17 +1,13 @@
-export default (scene, inlineKeyboard) => {
+export default (scene) => {
   scene.on('contact', async (ctx) => {
     ctx.session.phone = ctx.message.contact.phone_number
       .replace('+7', '')
       .replace(/D/g, '');
+
     await ctx.scene.leave('getContact');
-    await ctx.scene.enter('saveUserData');
-    ctx.reply(`Проверьте все данные и нажмите "Все верно" если они корректны: 
-Имя: ${ctx.session.fullname}
-Табельный номер: ${ctx.session.staffPersonalNumber}
-Дата рождения: ${ctx.session.birthday}
-О себе: ${ctx.session.description}
-Номер телефона: ${ctx.session.phone}`,
-    inlineKeyboard);
+    await ctx.scene.enter('getStaffPersonalNumber');
+
+    ctx.reply('Три вещи, которые нам нужны, чтобы было легче, отпрашивать Вас с работы.\n1. Напишите Ваш табельный номер.', { remove_keyboard: true });
   });
 
   scene.on('text', async (ctx) => {
@@ -23,19 +19,11 @@ export default (scene, inlineKeyboard) => {
       phone[0] = '';
       phone = phone.join('');
     }
-
     ctx.session.phone = phone;
 
     await ctx.scene.leave('getContact');
-    await ctx.scene.enter('saveUserData');
-    ctx.reply(
-      `Проверьте все данные и нажмите "Все верно", если они корректны: 
-Имя: ${ctx.session.fullname}
-Табельный номер: ${ctx.session.staffPersonalNumber}
-Дата рождения: ${ctx.session.birthday}
-О себе: ${ctx.session.description}
-Номер телефона: ${ctx.session.phone}`,
-      inlineKeyboard,
-    );
+    await ctx.scene.enter('getStaffPersonalNumber');
+
+    ctx.reply('Три вещи, которые нам нужны, чтобы было легче, отпрашивать Вас с работы.\n1. Напишите Ваш табельный номер.', { remove_keyboard: true });
   });
 };

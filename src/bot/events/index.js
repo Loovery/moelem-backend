@@ -79,9 +79,13 @@ const index = (bot, stage) => {
     const eventID = textLines[1].replace('ID:', '');
 
     const data = await getOrganizers(eventID);
-    const participants = data.map((item) => item.user.fullname);
+    const organizers = data.map((item) => `[${item.user.fullname}](tg://user?id=${item.user.telegramId})`);
 
-    ctx.reply(`Организаторы:\n${participants.join('\n')}`);
+    if (organizers.length > 0) {
+      ctx.reply(`*Организаторы*:\n${organizers.join('\n')}`, { parse_mode: 'markdown' });
+    } else {
+      ctx.reply('Пока ещё нет не одного организатора.');
+    }
   });
 
   bot.action('participants', async (ctx) => {
@@ -90,9 +94,13 @@ const index = (bot, stage) => {
     const eventID = textLines[1].replace('ID:', '');
 
     const data = await getParticipants(eventID);
-    const participants = data.map((item) => item.user.fullname);
+    const participants = data.map((item) => `[${item.user.fullname}](tg://user?id=${item.user.telegramId})`);
 
-    ctx.reply(`Участники:\n${participants.join('\n')}`);
+    if (participants.length > 0) {
+      ctx.reply(`*Участники*:\n${participants.join('\n')}`, { parse_mode: 'markdown' });
+    } else {
+      ctx.reply('Пока ещё нет не одного участника.');
+    }
   });
 
   bot.action('activeEvents', async (ctx) => {

@@ -1,12 +1,13 @@
-import Telegraf, { Extra } from 'telegraf';
+import Telegraf from 'telegraf';
 import session from 'telegraf/session';
 import Stage from 'telegraf/stage';
 import botStart from '#bot/start';
 import botEvents from '#bot/events';
+import { eventId } from '#bot/events/callbacks';
 import botUsers from '#bot/users';
 import { loggedIn } from '#bot/middlewares';
 import AdminControl from '#bot/admin';
-import { getEvent } from '#events/services';
+import moment from 'moment';
 
 require('src/db');
 require('dotenv')
@@ -38,39 +39,7 @@ bot.command('/sendtoall', async (ctx) => {
 
 bot.on('callback_query', async (ctx) => {
   if (ctx.callbackQuery.data.indexOf('event_') > -1) {
-    const eventId = ctx.callbackQuery.data.replace('event_', '');
-    const data = await getEvent(eventId);
-
-    let admin = false;
-    if (ctx.session.user) {
-      admin = ctx.session.user.admin;
-    }
-
-    ctx.editMessageText(`*${data.name}*
-ID:${data.id}
-Описание: ${data.description}
-Дата и время проведение: ${data.time}
-Место проведения: ${data.location}`,
-    Extra
-      .markdown(true)
-      .markup((m) => {
-        const buttons = [[
-          m.callbackButton('Организаторы', 'organizers'),
-          m.callbackButton('Участники', 'participants'),
-        ], [
-          m.callbackButton('Стать организатором', 'eventOrganize'),
-          m.callbackButton('Стать участником', 'eventParticipant'),
-        ]];
-
-        if (admin) {
-          buttons.push([
-            m.callbackButton('Закрыть мероприятие', 'closeEvent'),
-            m.callbackButton('Удалить мероприятие', 'deleteEvent'),
-          ]);
-        }
-        buttons.push([m.callbackButton('« Вернуться назад', 'events')]);
-        return m.inlineKeyboard(buttons);
-      }));
+    eventId(bot, ctx);
   }
 });
 

@@ -11,8 +11,8 @@ export default (scene, botCtx) => {
   scene.action('yesItIsMyName', (ctx) => {
     const messageData = ctx.update.callback_query.message;
     ctx.editMessageText(`${messageData.text}\nВаш ответ: Да.`);
-    ctx.reply('Отлично, полдела сделано.\nТеперь введите свой табельный номер.');
-    ctx.scene.enter('getStaffPersonalNumber');
+    ctx.reply('Отлично, полдела сделано.\nА теперь дату рождения (в формате: дд.мм.гггг).');
+    ctx.scene.enter('getBirthday');
   });
 
   scene.action('noItIsNotMyName', (ctx) => {
@@ -63,10 +63,10 @@ export default (scene, botCtx) => {
 
   scene.on('text', async (ctx) => {
     ctx.session.fullname = ctx.message.text;
-    ctx.reply('Отлично, полдела сделано.\nТеперь введите свой табельный номер.');
+    ctx.reply('Отлично, полдела сделано.\nА теперь дату рождения (в формате: дд.мм.гггг).');
 
     await ctx.scene.leave('getUserFullname');
-    ctx.scene.enter('getStaffPersonalNumber');
+    ctx.scene.enter('getBirthday');
   });
 
   init(botCtx);
