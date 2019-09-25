@@ -2,18 +2,22 @@ import newEvent from './newEvent';
 import updateEvent from './updateEvent';
 import getEvent from './getEvent';
 import getEvents from './getEvents';
-import pushParticipantToEvent from './pushParticipantToEvent';
-import pushOrganizerToEvent from './pushOrganizerToEvent';
+import pushParticipant from './pushParticipant';
+import pushOrganizer from './pushOrganizer';
 import getParticipants from './getParticipants';
+import deleteParticipant from './deleteParticipant';
 import getOrganizers from './getOrganizers';
+import deleteOrganizer from './deleteOrganizer';
 
 export {
   newEvent,
   updateEvent,
   getEvent,
   getEvents,
-  pushParticipantToEvent,
-  pushOrganizerToEvent,
   getParticipants,
+  pushParticipant,
+  deleteParticipant,
   getOrganizers,
+  pushOrganizer,
+  deleteOrganizer,
 };

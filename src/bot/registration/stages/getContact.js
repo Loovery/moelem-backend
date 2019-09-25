@@ -5,9 +5,9 @@ export default (scene) => {
       .replace(/D/g, '');
 
     await ctx.scene.leave('getContact');
-    await ctx.scene.enter('getStaffPersonalNumber');
+    await ctx.scene.enter('getEmail');
 
-    ctx.reply('Три вещи, которые нам нужны, чтобы было легче, отпрашивать Вас с работы.\n1. Напишите Ваш табельный номер.', { remove_keyboard: true });
+    ctx.reply('Введите Ваш электронный адрес.', { reply_markup: { remove_keyboard: true } });
   });
 
   scene.on('text', async (ctx) => {
@@ -22,8 +22,8 @@ export default (scene) => {
     ctx.session.phone = phone;
 
     await ctx.scene.leave('getContact');
-    await ctx.scene.enter('getStaffPersonalNumber');
+    await ctx.scene.enter('getEmail');
 
-    ctx.reply('Три вещи, которые нам нужны, чтобы было легче, отпрашивать Вас с работы.\n1. Напишите Ваш табельный номер.', { remove_keyboard: true });
+    ctx.reply('Введите Ваш электронный адрес.', { reply_markup: { remove_keyboard: true } });
   });
 };

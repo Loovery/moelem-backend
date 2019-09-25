@@ -1,5 +1,4 @@
 import Scene from 'telegraf/scenes/base';
-import { Extra } from 'telegraf';
 import stages from './stages';
 import { registrationUser } from '#users/services';
 import AdminControl from '#bot/admin';
@@ -16,6 +15,10 @@ const index = (bot, stage, startCtx) => {
   const getContact = new Scene('getContact');
   stage.register(getContact);
   stages.getContact(getContact);
+
+  const getEmail = new Scene('getEmail');
+  stage.register(getEmail);
+  stages.getEmail(getEmail);
 
   const getStaffPersonalNumber = new Scene('getStaffPersonalNumber');
   stage.register(getStaffPersonalNumber);
@@ -57,6 +60,7 @@ const index = (bot, stage, startCtx) => {
         birthday,
         description: ctx.session.description,
         phone: ctx.session.phone,
+        email: ctx.session.email,
       };
 
       await registrationUser(userData);

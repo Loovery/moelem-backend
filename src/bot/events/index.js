@@ -11,10 +11,12 @@ import {
 } from '#bot/events/stages';
 import {
   getEvents,
-  pushOrganizerToEvent,
-  pushParticipantToEvent,
   getOrganizers,
+  deleteOrganizer,
+  pushOrganizer,
   getParticipants,
+  deleteParticipant,
+  pushParticipant,
 } from '#events/services';
 
 const index = (bot, stage) => {
@@ -51,7 +53,7 @@ const index = (bot, stage) => {
     const { text } = ctx.callbackQuery.message;
     const textLines = text.split('\n');
     const eventID = textLines[1].replace('ID:', '');
-    const resultPush = await pushOrganizerToEvent(eventID, ctx.session.user.id);
+    const resultPush = await pushOrganizer(eventID, ctx.session.user.id);
     if (resultPush.n > 0) {
       textLines[textLines.length - 1] = 'Вы записались на мероприятие, как организатор.';
     } else {
@@ -64,7 +66,7 @@ const index = (bot, stage) => {
     const { text } = ctx.callbackQuery.message;
     const textLines = text.split('\n');
     const eventID = textLines[1].replace('ID:', '');
-    const resultPush = await pushParticipantToEvent(eventID, ctx.session.user.id);
+    const resultPush = await pushParticipant(eventID, ctx.session.user.id);
     if (resultPush.n > 0) {
       textLines[textLines.length - 1] = 'Вы записались на мероприятие, как участник.';
     } else {
@@ -94,7 +96,12 @@ const index = (bot, stage) => {
     const eventID = textLines[1].replace('ID:', '');
 
     const data = await getParticipants(eventID);
-    const participants = data.map((item) => `[${item.user.fullname}](tg://user?id=${item.user.telegramId})`);
+    const participants = data.map((item) => {
+      if (item.user) {
+        return `[${item.user.fullname}](tg://user?id=${item.user.telegramId})`;
+      }
+      return 'Пользователь удалён';
+    });
 
     if (participants.length > 0) {
       ctx.reply(`*Участники*:\n${participants.join('\n')}`, { parse_mode: 'markdown' });

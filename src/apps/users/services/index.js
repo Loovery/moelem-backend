@@ -3,6 +3,7 @@ import updateUserData from './updateUserData';
 import getUser from './getUser';
 import getUsers from './getUsers';
 import getAdminUsers from './getAdminUsers';
+import isUniqueField from './isUniqueField';
 
 export {
   registrationUser,
@@ -10,4 +11,5 @@ export {
   getUser,
   getUsers,
   getAdminUsers,
+  isUniqueField,
 };

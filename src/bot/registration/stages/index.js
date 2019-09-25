@@ -1,6 +1,7 @@
 import getUserFullname from './getUserFullname';
 import getBirthday from './getBirthday';
 import getContact from './getContact';
+import getEmail from './getEmail';
 import getStaffPersonalNumber from './getStaffPersonalNumber';
 import getJobTitle from './getJobTitle';
 import getDepartment from './getDepartment';
@@ -10,6 +11,7 @@ export default {
   getUserFullname,
   getBirthday,
   getContact,
+  getEmail,
   getStaffPersonalNumber,
   getJobTitle,
   getDepartment,
