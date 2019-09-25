@@ -7,10 +7,11 @@ const index = (bot, stage) => {
   bot.command('me', (ctx) => {
     const { user } = ctx.session;
 
-    const birthday = moment(user.birthday);
-    birthday.locale('ru');
+    if(user) {
+      const birthday = moment(user.birthday);
+      birthday.locale('ru');
 
-    ctx.reply(`*${user.fullname}* - ${user.role} молодёжной организации
+      ctx.reply(`*${user.fullname}* - ${user.role} молодёжной организации
 Родился ${birthday.format('DD.MM.YYYY, dddd')}
 ${user.phone}
 
@@ -27,8 +28,10 @@ ${user.description}
 Награды: [Возможно будущий функционал]
 
 [Тут будут кнопки по редактированию информации]`, { parse_mode: 'markdown' });
+    } else {
+      ctx.reply('У нас нет, данных по Вам. Вы можете пройти регистрацию отправив мне команду /start');
+    }
   });
-
 
   bot.command('/user', async (ctx) => {
     const staffPersonalNumberOrFullname = ctx.message.text.split('/user')[1].trim();

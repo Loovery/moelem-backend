@@ -37,6 +37,14 @@ bot.command('/sendtoall', async (ctx) => {
   }
 });
 
+bot.command('/help', async (ctx) => {
+  ctx.reply(`Надеюсь я смогу Вам помочь.
+Для того чтобы посмотреть мероприятия, отправьте мне команду "/events".
+Для того чтобы просмотреть Вашу информацию, отправьте мне команду "/me".
+Для того чтобы просмотреть информацию другого участника молодёжки, отправьте мне команду "/user" + имя и фамилия участника или табельный номер, для примера "/user 55557".
+Для прохождения регистрации, отправьте мне команду "/start".`);
+});
+
 bot.on('callback_query', async (ctx) => {
   if (ctx.callbackQuery.data.indexOf('event_') > -1) {
     eventId(bot, ctx);
@@ -50,7 +58,7 @@ bot.on('text', async (ctx) => {
   } else {
     console.log(ctx.message.from.username, ctx.message.text);
   }
-  ctx.reply(' Пока ничего не работает');
+  ctx.reply('Неизвестная команда, напишите /help для справки', { reply_markup: { remove_keyboard: true } });
 });
 
 bot.launch();
