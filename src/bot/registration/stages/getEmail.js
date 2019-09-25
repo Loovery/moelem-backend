@@ -5,7 +5,7 @@ export default (scene) => {
     await ctx.scene.leave('getEmail');
     await ctx.scene.enter('getStaffPersonalNumber');
 
-    ctx.reply('Три вещи, которые нам нужны, чтобы было легче, отпрашивать Вас с работы.\n1. Напишите Ваш табельный номер.', { reply_markup: { remove_keyboard: true } });
+    ctx.reply('Три вещи которые нам нужны, чтобы было легче отпрашивать Вас с работы.\n1. Напишите Ваш табельный номер.', { reply_markup: { remove_keyboard: true } });
   });
 
   scene.on('text', async (ctx) => {
