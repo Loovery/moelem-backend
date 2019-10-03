@@ -22,7 +22,8 @@ export default (scene) => {
 Дата: ${ctx.session.event.date}
 Место проведения: ${ctx.session.event.location} 
 Максимальное число организаторов: ${ctx.session.event.maxOrganizers} 
-Максимальное число участников: ${ctx.session.event.maxParticipants}`,
+Максимальное число участников: ${ctx.session.event.maxParticipants}
+Ссылка на чат: ${ctx.session.event.chatLink}`,
       checkingInputEventData);
     }
   });

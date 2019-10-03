@@ -7,7 +7,7 @@ const index = (bot, stage) => {
   bot.command('me', (ctx) => {
     const { user } = ctx.session;
 
-    if(user) {
+    if (user) {
       const birthday = moment(user.birthday);
       birthday.locale('ru');
 

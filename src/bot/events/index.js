@@ -5,10 +5,12 @@ import {
   stageEventDescription,
   stageEventDateAndTime,
   stageEventLocation,
-  stageEventSave,
+  stageEventChatLink,
   stageEventMaxOrganizer,
   stageEventMaxParticipant,
+  stageEventSave,
 } from '#bot/events/stages';
+
 import {
   getEvents,
   getOrganizers,
@@ -35,6 +37,10 @@ const index = (bot, stage) => {
   const getEventLocation = new Scene('getEventLocation');
   stage.register(getEventLocation);
   stageEventLocation(getEventLocation);
+
+  const getEventChatLink = new Scene('getEventChatLink');
+  stage.register(getEventChatLink);
+  stageEventChatLink(getEventChatLink);
 
   const getEventMaxOrganizer = new Scene('getEventMaxOrganizer');
   stage.register(getEventMaxOrganizer);

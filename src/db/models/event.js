@@ -6,6 +6,7 @@ const EventSchema = new mongoose.Schema({
     unique: true,
   },
   description: String,
+  chatLink: String,
   time: Date,
   location: String,
   manager: {

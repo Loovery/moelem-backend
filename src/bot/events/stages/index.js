@@ -2,16 +2,18 @@ import stageEventName from './getEventName';
 import stageEventDescription from './getEventDescription';
 import stageEventDateAndTime from './getEventDateAndTime';
 import stageEventLocation from './getEventLocation';
-import stageEventSave from './getEventSave';
+import stageEventChatLink from './getEventChatLink';
 import stageEventMaxOrganizer from './getEventMaxOrganizer';
 import stageEventMaxParticipant from './getEventMaxParticipant';
+import stageEventSave from './getEventSave';
 
 export {
   stageEventName,
   stageEventDescription,
   stageEventDateAndTime,
   stageEventLocation,
-  stageEventSave,
+  stageEventChatLink,
   stageEventMaxOrganizer,
   stageEventMaxParticipant,
+  stageEventSave,
 };
