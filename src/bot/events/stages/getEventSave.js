@@ -38,6 +38,7 @@ export default (scene, bot) => {
     const data = await newEvent(eventData);
     const admin = new AdminControl(bot);
 
+    // eslint-disable-next-line no-unused-vars
     let emptySlots;
     if (data.maxOrganizers !== 0 || data.maxParticipants !== 0) {
       emptySlots = '\nКоличество свободных мест:';
