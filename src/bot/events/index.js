@@ -1,23 +1,22 @@
 import { Extra } from 'telegraf';
 import Scene from 'telegraf/scenes/base';
 import {
-  stageEventName,
-  stageEventDescription,
-  stageEventDateAndTime,
-  stageEventLocation,
   stageEventChatLink,
+  stageEventDateAndTime,
+  stageEventDescription,
+  stageEventLocation,
   stageEventMaxOrganizer,
   stageEventMaxParticipant,
+  stageEventName,
   stageEventSave,
 } from '#bot/events/stages';
 
 import {
+  closeEvent,
   getEvents,
   getOrganizers,
-  deleteOrganizer,
-  pushOrganizer,
   getParticipants,
-  deleteParticipant,
+  pushOrganizer,
   pushParticipant,
 } from '#events/services';
 
@@ -54,11 +53,15 @@ const index = (bot, stage) => {
   stage.register(getEventSave);
   stageEventSave(getEventSave, bot);
 
+  const getEventID = (text) => {
+    const textLines = text.split('\n');
+    return textLines[1].replace('ID:', '');
+  };
 
   bot.action('eventOrganize', async (ctx) => {
     const { text } = ctx.callbackQuery.message;
     const textLines = text.split('\n');
-    const eventID = textLines[1].replace('ID:', '');
+    const eventID = getEventID(text);
     const resultPush = await pushOrganizer(eventID, ctx.session.user.id);
     if (resultPush.n > 0) {
       textLines[textLines.length - 1] = 'Вы записались на мероприятие, как организатор.';
@@ -145,7 +148,15 @@ const index = (bot, stage) => {
   });
 
   bot.action('closeEvent', async (ctx) => {
-    ctx.editMessageText('Почти закрыл мероприятие\nФункция пока не работает');
+    const { text } = ctx.callbackQuery.message;
+    const eventID = getEventID(text);
+    try {
+      await closeEvent(eventID);
+      ctx.editMessageText('Мероприятие закрыто');
+    } catch (error) {
+      console.log(error);
+      ctx.reply('Ошибка закрытия группы');
+    }
   });
 
   bot.action('newEvent', async (ctx) => {
