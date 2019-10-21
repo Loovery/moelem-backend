@@ -9,6 +9,7 @@ import deleteParticipant from './deleteParticipant';
 import getOrganizers from './getOrganizers';
 import deleteOrganizer from './deleteOrganizer';
 import closeEvent from './closeEvent';
+import deleteEvent from './deleteEvent';
 
 export {
   newEvent,
@@ -22,4 +23,5 @@ export {
   pushOrganizer,
   deleteOrganizer,
   closeEvent,
+  deleteEvent,
 };
