@@ -1,6 +1,7 @@
 import { Extra } from 'telegraf';
 import { newEvent } from '#events/services';
 import AdminControl from '#bot/admin';
+import moment from 'moment';
 
 export default (scene, bot) => {
   const questionOfParticipation = Extra
@@ -50,10 +51,13 @@ export default (scene, bot) => {
       }
     }
 
+    time = moment(eventData.time);
+    time.locale('ru');
+
     admin.sendMessageToEveryone(`ID:${data.id}\nДобавлено новое мероприятие:
 Название: ${eventData.name}
 Описание: ${eventData.description}
-Дата и время проведение: ${eventData.time}
+Дата и время проведение: ${time.format('LLLL')}
 Место проведения: ${eventData.location}
 
 Хотите быть частью мероприятия?`,

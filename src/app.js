@@ -7,7 +7,6 @@ import { eventId } from '#bot/events/callbacks';
 import botUsers from '#bot/users';
 import { loggedIn } from '#bot/middlewares';
 import AdminControl from '#bot/admin';
-import moment from 'moment';
 
 require('src/db');
 require('dotenv')
